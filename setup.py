@@ -7,4 +7,3 @@ setup(name='pyrat',
       author_email='mrbell@mpa-garching.mpg.de',
       packages=['pyrat'],
       package_dir={'pyrat': ''})
-
