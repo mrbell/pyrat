@@ -49,6 +49,7 @@ class Messenger(object):
         use_color, use_structure flags, and add_timestamp flags.
         """
         self.verbosity = verbosity
+        self.use_color = use_color
         if use_color:
             self.enable_color()
         else:
@@ -81,18 +82,20 @@ class Messenger(object):
         self.WARNING = ''
         self.FAIL = ''
         self.MESSAGE = ''
+        self.DEBUG = ''
 
     def enable_color(self):
         """
         Enable all color formatting.
         """
         # Color definitions
-        self.HEADER1 = '\033[95m'
-        self.HEADER2 = '\033[94m'
+        self.HEADER1 = self.BOLD + '\033[95m'
+        self.HEADER2 = self.BOLD + '\033[94m'
         self.OKGREEN = '\033[92m'
         self.WARNING = '\033[93m'
         self.FAIL = '\033[91m'
         self.MESSAGE = ''
+        self.DEBUG = '\033[96m'
 
     def _get_structure_string(self, level):
         """
@@ -124,11 +127,11 @@ class Messenger(object):
         time_string = self._get_time_string()
         return time_string + struct_string + msg
 
-    def _write(self, msg):
+    def _write(self, cmod, msg):
         """
         """
 
-        print msg
+        print cmod + msg + self.ENDC
         if type(self.logfile) is str:
             self.f.write(msg + '\n')
 
@@ -138,42 +141,49 @@ class Messenger(object):
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.WARNING + full_msg + self.ENDC)
+            self._write(self.WARNING, full_msg)
 
     def header1(self, msg, verb_level=0):
         """
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.BOLD + self.HEADER1 + full_msg + self.ENDC)
+            self._write(self.HEADER1, full_msg)
 
     def header2(self, msg, verb_level=1):
         """
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.BOLD + self.HEADER2 + full_msg + self.ENDC)
+            self._write(self.HEADER2, full_msg)
 
     def success(self, msg, verb_level=1):
         """
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.OKGREEN + full_msg + self.ENDC)
+            self._write(self.OKGREEN, full_msg)
 
     def failure(self, msg, verb_level=0):
         """
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.FAIL + full_msg + self.ENDC)
+            self._write(self.FAIL, full_msg)
 
     def message(self, msg, verb_level=2):
         """
         """
         if verb_level <= self.verbosity:
             full_msg = self._make_full_msg(msg, verb_level)
-            self._write(self.MESSAGE + full_msg + self.ENDC)
+            self._write(self.MESSAGE, full_msg)
+
+    def debug(self, msg, verb_level=3):
+        """
+        """
+        if verb_level <= self.verbosity:
+            full_msg = self._make_full_msg(msg, verb_level)
+            self._write(self.DEBUG, full_msg)
 
 
 def progress(width, part, whole):
