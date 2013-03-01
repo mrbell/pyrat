@@ -58,6 +58,12 @@ class Messenger(object):
         self.use_structure = use_structure
         self.add_timestamp = add_timestamp
 
+        self.set_logfile(logfile)
+
+    def set_logfile(self, logfile):
+        """
+        """
+
         self.logfile = logfile
         if logfile is not None:
             self.f = open(logfile, 'w')  # always overwrites existing files.
