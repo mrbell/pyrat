@@ -907,7 +907,6 @@ def read_data_from_ms(msfn, vis, noise, viscol="DATA", noisecol='SIGMA',
 
         # one noise per SPW (also per cross-corr), applies to all channels
         noise_recs = stab.getcol(noisecol.upper())
-#            noise_recs = noise_recs.reshape(nrecs_stab, nstokes)
 
         for j in range(nchan):
             m.message(".   Reading channel " + str(freqs[i][j]) +
@@ -922,8 +921,11 @@ def read_data_from_ms(msfn, vis, noise, viscol="DATA", noisecol='SIGMA',
             u_array = np.zeros(nrecs_stab)
             v_array = np.zeros(nrecs_stab)
 
+            # TODO: Get rid of this! For some reason my colname selection is
+            #     not working.
+            viscol = stab.colnames()[-1]
+
             data_recs = stab.getcolslice(viscol.upper(), [j, 0], [j, 3])
-#                noise_recs = stab.getcolslice(noisecol.upper(), [j], [j])
             flag_recs = stab.getcolslice('FLAG', [j, 0], [j, 3])
 
             data_recs = data_recs.reshape(nrecs_stab, nstokes)
@@ -935,11 +937,14 @@ def read_data_from_ms(msfn, vis, noise, viscol="DATA", noisecol='SIGMA',
                     data_rec = data_recs[k] * (1. - flag_recs[k])
                     Qvis_array[k] = np.dot(Spart[0], data_rec)
                     Uvis_array[k] = np.dot(Spart[1], data_rec)
-                    if np.dot(Spart[0], 1. - flag_recs[k]) != 0. \
-                        and np.dot(Spart[1], 1. - flag_recs[k]) != 0.:
-                            qnoise = np.dot(Spart[0], noise_recs[k])
-                            unoise = np.dot(Spart[1], noise_recs[k])
-                            noise_array[k] = np.sqrt(qnoise ** 2 + unoise ** 2)
+
+                    if True not in flag_recs[k]:
+                        # WARNING! Strong flagging...
+                        # if any correlation is flagged then flag them all
+                        qnoise = np.dot(Spart[0], noise_recs[k])
+                        unoise = np.dot(Spart[1], noise_recs[k])
+                        noise_array[k] = np.sqrt(qnoise * qnoise.conjugate() +
+                                             unoise * unoise.conjugate()).real
 
                     u_array[k] = uvw[k, 0] / np.sqrt(PI * freqs[i][j])
                     v_array[k] = uvw[k, 1] / np.sqrt(PI * freqs[i][j])
@@ -952,7 +957,7 @@ def read_data_from_ms(msfn, vis, noise, viscol="DATA", noisecol='SIGMA',
                     data_rec = data_recs[k] * (1. - flag_recs[k])
                     vis_array[k] = np.dot(Spart, data_rec)
                     if np.dot(Spart, 1. - flag_recs[k]) != 0.:
-                            noise_array[k] = np.dot(Spart, noise_recs[k])
+                        noise_array[k] = np.dot(Spart, noise_recs[k])
 
                     u_array[k] = uvw[k, 0] / lambs[i][j]
                     v_array[k] = uvw[k, 1] / lambs[i][j]
