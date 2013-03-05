@@ -921,10 +921,6 @@ def read_data_from_ms(msfn, vis, noise, viscol="DATA", noisecol='SIGMA',
             u_array = np.zeros(nrecs_stab)
             v_array = np.zeros(nrecs_stab)
 
-            # TODO: Get rid of this! For some reason my colname selection is
-            #     not working.
-            viscol = stab.colnames()[-1]
-
             data_recs = stab.getcolslice(viscol.upper(), [j, 0], [j, 3])
             flag_recs = stab.getcolslice('FLAG', [j, 0], [j, 3])
 
