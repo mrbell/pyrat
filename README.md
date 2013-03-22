@@ -16,6 +16,27 @@ Features include:
   - Helper class for handling parameter sets and parsing parameter set files.
   - Helper class for writing structured log information to screen and a file.
 
+Installation instructions
+-------------------------
+
+Prerequisites for pyrat include
+
+  - python
+  - numpy
+  - [pyrap](https://code.google.com/p/pyrap/)
+  - h5py
+
+To install, simply type
+
+   > python setup.py install
+
+The pyrat modules should then be importable from your python code, e.g.
+
+   import pyrat.Messenger as M
+
+About pyrat
+-----------
+
 pyrat is licensed under the [GPLv3](http://www.gnu.org/licenses/gpl.html).
 
 pyrat has been developed at the Max Planck Institute for Astrophysics and 
