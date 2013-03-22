@@ -32,7 +32,7 @@ To install, simply type
 
 The pyrat modules should then be importable from your python code, e.g.
 
-   import pyrat.Messenger as M
+   > import pyrat.Messenger as M
 
 About pyrat
 -----------
