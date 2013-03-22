@@ -17,3 +17,8 @@ Features include:
   - Helper class for writing structured log information to screen and a file.
 
 pyrat is licensed under the [GPLv3](http://www.gnu.org/licenses/gpl.html).
+
+pyrat has been developed at the Max Planck Institute for Astrophysics and 
+within the framework of the DFG Forschergruppe 1254, "Magnetisation of 
+Interstellar and Intergalactic Media: The Prospects of Low-Frequency Radio 
+Observations."
