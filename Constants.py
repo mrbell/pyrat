@@ -1,7 +1,7 @@
 """
 Constants.py
 
-**********************************************************************************
+*******************************************************************************
 
 Copyright 2012 Michael Bell
 
@@ -20,18 +20,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyrat.  If not, see <http://www.gnu.org/licenses/>.
 
-**********************************************************************************
+*******************************************************************************
 
 Module containing useful physical constants and unit conversions.
 
 """
 
 PI = 3.14159265359
-ii = complex(0,1)
-C = 299792458. # speed of light, in m/s
-C2 = C**2. # speec of light squared
-
+ii = complex(0, 1)
+C = 299792458.  # speed of light, in m/s
+C2 = C ** 2.  # speec of light squared
 
 ARCSEC_TO_RAD = 4.84813681e-6
-RAD_TO_DEG = 180./PI
-DEG_TO_RAD = PI/180.
+RAD_TO_DEG = 180. / PI
+DEG_TO_RAD = PI / 180.

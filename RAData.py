@@ -68,25 +68,6 @@ class Coordinates(object):
 
         self.f = _create_file(fn)
 
-#        if self._initialized:
-#            self._load_freqs_from_file()
-
-#    def _load_freqs_from_file(self):
-#        """
-#        Desc.
-#
-#        Args:
-#            None
-#
-#        Returns:
-#            Nothing.
-#
-#        """
-#        self.freqs = []
-#
-#        for i in self.f.iterkeys():
-#            self.freqs.append(self.f[i][FREQSET_STRING][:])
-
     def init_subgroup(self, spw, freqs, nrecs):
         """
         Desc.
@@ -280,12 +261,21 @@ class Data(BaseData):
 
     def _looped_operation(self, other, target, func):
         """
-        Desc.
+        Performs some operation on the Data array (defined by func). The oper-
+        ation is performed element wise, and only a small chunk of the full
+        data array is loaded into memory at a time. The results are stored
+        to disk before a new chunk of data is loaded into memory.
 
         Args:
+            other: Another data object on which to operate.
+            target: The destination object for the result of the operation.
+            func: A function defining the operation. The function should take
+                a part of the current data object as first argument, and a
+                part of "other" as a second argument. The result will be passed
+                to "target."
 
         Returns:
-
+            None
         """
         DO = 0
         NP = 1
@@ -372,7 +362,7 @@ class Data(BaseData):
             Nothing
         """
 
-        raise Exception("No transform function defined for PolData object!")
+        raise Exception("No transform function defined for base Data object!")
 
     def store_records(self, a, spw, chan):
         """
@@ -482,7 +472,8 @@ class Data(BaseData):
 
 class PolData(BaseData):
     """
-    Desc.
+    Similar to the Data object, but this contains data for polarized
+    visibilities (the stokes Q and U visibilities).
 
     Attributes:
 
@@ -743,6 +734,16 @@ def _create_file(fn):
     """
     Creates a file in which to store data or coordinates.
     """
+
+    # Trying the "core" driver. From the H5PY documentation:
+    #     "Memory-map the entire file; all operations are performed in memory
+    #     and written back out when the file is closed.
+    #     Keywords:
+    #        backing_store: If True (default), save changes to a real file
+    #        when closing. If False, the file exists purely in memory and is
+    #        discarded when closed."
+    # TODO: Test the 'core' driver!
+    # return h5py.File(fn, driver='core', backing_store=False)
 
     return h5py.File(fn)
 
