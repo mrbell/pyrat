@@ -13,5 +13,7 @@ Features include:
   - Buffering of data using H5PY
   - Convenient data structures for handling both imaging and visibility data.
   - Methods for reading visibility data from MeasurementSet files.
+  - Helper class for handling parameter sets and parsing parameter set files.
+  - Helper class for writing structured log information to screen and a file.
 
 pyrat is licensed under the [GPLv3](http://www.gnu.org/licenses/gpl.html).
